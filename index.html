@@ -296,16 +296,39 @@ function showResults() {
 }
 
 function sendEmail() {
-  var p = document.getElementById('iPrenom').value.trim();
-  var e = document.getElementById('iEmail').value.trim();
-  if (!p || !e || !e.includes('@')) { alert('Merci de renseigner ton prénom et ton adresse email.'); return; }
+
+  var prenom = document.getElementById('iPrenom').value.trim();
+  var email = document.getElementById('iEmail').value.trim();
+
+  if (!prenom || !email || !email.includes('@')) {
+    alert("Merci de renseigner un prénom et un email valide.");
+    return;
+  }
+
   var btn = document.getElementById('btnSub');
   btn.disabled = true;
-  btn.textContent = 'Envoi...';
-  setTimeout(function(){
-    document.getElementById('successMsg').style.display = 'block';
-    btn.textContent = 'Envoyé ✓';
-  }, 1000);
+  btn.textContent = "Envoi...";
+
+  var formData = new URLSearchParams();
+  formData.append("first_name", prenom);
+  formData.append("email", email);
+
+  fetch("https://systeme.io/embedded/38424762/subscription", {
+    method: "POST",
+    body: formData,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  })
+  .then(function() {
+      document.getElementById('successMsg').style.display = 'block';
+      btn.textContent = "Envoyé ✓";
+  })
+  .catch(function() {
+      alert("Erreur technique. Réessaie.");
+      btn.disabled = false;
+      btn.textContent = "Recevoir →";
+  });
 }
 </script>
 </body>
