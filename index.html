@@ -224,6 +224,16 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.38); }
     </div>
     <p class="form-note">Tes données ne sont jamais revendues. Tu te désabonnes en un clic.</p>
     <div class="success" id="successMsg"><p>✓ C'est envoyé ! Vérifie ta boîte mail.</p></div>
+    <!-- Soumission Systeme.io (cachée) -->
+<iframe name="sio_hidden_iframe" style="display:none;"></iframe>
+
+<form id="sioForm" method="post" action="https://systeme.io/embedded/38424762/subscription" target="sio_hidden_iframe" style="display:none;">
+  <!-- champ anti-spam (doit rester vide) -->
+  <input type="text" name="surname" value="">
+  <input type="text" name="email" id="sio_email">
+  <input type="text" name="first_name" id="sio_first_name">
+  <button type="submit">Subscribe</button>
+</form>
   </div>
   <div class="cta-box">
     <h3 id="ctaTitle"></h3>
