@@ -306,7 +306,6 @@ function showResults() {
 }
 
 function sendEmail() {
-
   var prenom = document.getElementById('iPrenom').value.trim();
   var email = document.getElementById('iEmail').value.trim();
 
@@ -314,6 +313,22 @@ function sendEmail() {
     alert("Merci de renseigner un prénom et un email valide.");
     return;
   }
+
+  var btn = document.getElementById('btnSub');
+  btn.disabled = true;
+  btn.textContent = "Envoi...";
+
+  // Injecte les valeurs dans le formulaire caché Systeme.io
+  document.getElementById('sio_first_name').value = prenom;
+  document.getElementById('sio_email').value = email;
+
+  // Soumet le formulaire
+  document.getElementById('sioForm').submit();
+
+  // Feedback
+  document.getElementById('successMsg').style.display = 'block';
+  btn.textContent = "Envoyé ✓";
+}
 
   var btn = document.getElementById('btnSub');
   btn.disabled = true;
