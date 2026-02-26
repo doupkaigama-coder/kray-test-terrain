@@ -253,9 +253,11 @@ function pick(el) {
   for (var i=0; i<all.length; i++) all[i].classList.remove('sel');
   el.classList.add('sel');
   answers[q] = el.getAttribute('data-val');
+
   var count = Object.keys(answers).length;
   document.getElementById('pFill').style.width = (count/6*100)+'%';
   document.getElementById('pCount').textContent = count+' / 6';
+
   if (count === 6) {
     document.getElementById('btnVoir').classList.add('active');
     document.getElementById('btnNote').textContent = 'Tout est prêt — clique pour voir ton profil';
@@ -266,7 +268,9 @@ function showResults() {
   var vals = Object.values(answers);
   var g = vals.filter(function(v){return v==='green';}).length;
   var r = vals.filter(function(v){return v==='red';}).length;
+
   var profile, tag, title, desc, dTitle, dText, ctaT, ctaD;
+
   if (g >= 4) {
     profile='solid'; tag='✦ Terrain solide';
     title='Ton terrain est prêt. Tu peux avancer.';
@@ -292,6 +296,7 @@ function showResults() {
     ctaT='Le bon moment pour poser des fondations solides';
     ctaD='Le Vrai Départ Entrepreneurial t\'accompagne pas à pas pour clarifier ce qui est encore flou, sans te précipiter ni te mettre sous pression.';
   }
+
   document.getElementById('rTag').textContent = tag;
   document.getElementById('rTag').className = 'res-tag '+profile;
   document.getElementById('rTitle').textContent = title;
@@ -300,6 +305,7 @@ function showResults() {
   document.getElementById('dText').textContent = dText;
   document.getElementById('ctaTitle').textContent = ctaT;
   document.getElementById('ctaText').textContent = ctaD;
+
   document.getElementById('quizZone').style.display = 'none';
   document.getElementById('results').style.display = 'block';
   window.scrollTo({top:0, behavior:'smooth'});
@@ -307,10 +313,10 @@ function showResults() {
 
 function sendEmail() {
   var prenom = document.getElementById('iPrenom').value.trim();
-  var email = document.getElementById('iEmail').value.trim();
+  var email  = document.getElementById('iEmail').value.trim();
 
   if (!prenom || !email || !email.includes('@')) {
-    alert("Merci de renseigner un prénom et un email valide.");
+    alert("Merci de renseigner ton prénom et ton adresse email.");
     return;
   }
 
@@ -318,42 +324,16 @@ function sendEmail() {
   btn.disabled = true;
   btn.textContent = "Envoi...";
 
-  // Injecte les valeurs dans le formulaire caché Systeme.io
+  // 1) Renseigne le formulaire Systeme.io caché
   document.getElementById('sio_first_name').value = prenom;
   document.getElementById('sio_email').value = email;
 
-  // Soumet le formulaire
+  // 2) Soumet le formulaire (contourne les blocages fetch/CORS)
   document.getElementById('sioForm').submit();
 
-  // Feedback
+  // 3) Feedback utilisateur
   document.getElementById('successMsg').style.display = 'block';
   btn.textContent = "Envoyé ✓";
-}
-
-  var btn = document.getElementById('btnSub');
-  btn.disabled = true;
-  btn.textContent = "Envoi...";
-
-  var formData = new URLSearchParams();
-  formData.append("first_name", prenom);
-  formData.append("email", email);
-
-  fetch("https://systeme.io/embedded/38424762/subscription", {
-    method: "POST",
-    body: formData,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  })
-  .then(function() {
-      document.getElementById('successMsg').style.display = 'block';
-      btn.textContent = "Envoyé ✓";
-  })
-  .catch(function() {
-      alert("Erreur technique. Réessaie.");
-      btn.disabled = false;
-      btn.textContent = "Recevoir →";
-  });
 }
 </script>
 </body>
