@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Test que Personne ne te Propose – Kray Formation</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Fauna+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --vert: #1F342E;
+  --orange: #E95A22;
+  --beige: #FFF8F2;
+  --rose: #FFEFE6;
+  --cannelle: #D5804A;
+  --texte: #1F342E;
+  --gris: #888;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito Sans', sans-serif; background: var(--beige); color: var(--texte); }
+
+.header { background: var(--vert); padding: 18px; text-align: center; }
+.logo { font-size: 13px; font-weight: 600; color: white; letter-spacing: 3px; text-transform: uppercase; }
+.logo span { color: var(--orange); }
+
+.hero { background: var(--vert); padding: 60px 24px 70px; text-align: center; }
+.badge { display: inline-block; background: rgba(233,90,34,0.15); border: 1px solid rgba(233,90,34,0.3); color: var(--orange); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; }
+.hero h1 { font-family: 'Fauna One', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; color: white; line-height: 1.2; max-width: 660px; margin: 0 auto 18px; }
+.hero h1 em { font-style: italic; color: var(--orange); }
+.hero p { font-size: 15px; color: rgba(255,255,255,0.68); max-width: 480px; margin: 0 auto 8px; line-height: 1.7; }
+.hero-sub { font-size: 12px; color: rgba(255,255,255,0.38); }
+
+.progress-wrap { background: var(--rose); padding: 14px 24px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.progress-label { font-size: 11px; font-weight: 600; color: var(--gris); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+.progress-bar { flex: 1; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--orange); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+.progress-count { font-size: 12px; font-weight: 600; color: var(--vert); white-space: nowrap; }
+
+.main { max-width: 680px; margin: 0 auto; padding: 50px 24px 80px; }
+
+.q-block { margin-bottom: 44px; }
+.q-num { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+.q-title { font-family: 'Fauna One', serif; font-size: clamp(1.1rem, 2.5vw, 1.45rem); color: var(--vert); line-height: 1.3; margin-bottom: 6px; }
+.q-sub { font-size: 14px; color: var(--gris); font-style: italic; line-height: 1.6; margin-bottom: 18px; }
+
+.options { display: flex; flex-direction: column; gap: 9px; }
+.option { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; background: white; border: 1.5px solid rgba(0,0,0,0.08); border-radius: 10px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.option:hover { border-color: var(--vert); }
+.option.sel { border-color: var(--vert); background: var(--vert); }
+.option.sel .opt-text { color: white; }
+.option.sel .dot { background: var(--orange); border-color: var(--orange); }
+.option.sel .dot::after { opacity: 1; }
+.dot { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.18); margin-top: 2px; position: relative; transition: all 0.2s; }
+.dot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 7px; height: 7px; border-radius: 50%; background: white; opacity: 0; transition: opacity 0.2s; }
+.opt-emoji { font-size: 14px; min-width: 18px; margin-top: 2px; }
+.opt-text { font-size: 14px; line-height: 1.5; color: var(--texte); transition: color 0.2s; }
+
+.divider { height: 1px; background: linear-gradient(to right, transparent, var(--rose), transparent); margin: 4px 0 44px; }
+
+.submit-zone { text-align: center; padding: 16px 0 0; }
+.btn-voir { padding: 16px 44px; background: var(--vert); color: white; border: none; border-radius: 10px; font-family: 'Nunito Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; opacity: 0.3; pointer-events: none; transition: all 0.25s; }
+.btn-voir.active { opacity: 1; pointer-events: all; }
+.btn-voir.active:hover { background: #2a4a3e; transform: translateY(-2px); }
+.btn-note { font-size: 12px; color: var(--gris); margin-top: 10px; }
+
+#results { display: none; }
+.res-hero { background: var(--vert); border-radius: 16px; padding: 44px 36px; text-align: center; margin-bottom: 24px; }
+.res-tag { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 18px; }
+.res-tag.solid { background: rgba(233,90,34,0.2); color: var(--orange); border: 1px solid rgba(233,90,34,0.3); }
+.res-tag.fragile { background: rgba(213,128,74,0.2); color: var(--cannelle); border: 1px solid rgba(213,128,74,0.3); }
+.res-tag.tension { background: rgba(220,53,69,0.15); color: #e05a68; border: 1px solid rgba(220,53,69,0.3); }
+.res-title { font-family: 'Fauna One', serif; font-size: clamp(1.4rem, 3.5vw, 2rem); color: white; line-height: 1.2; margin-bottom: 14px; }
+.res-desc { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; max-width: 480px; margin: 0 auto; }
+
+.res-detail { background: white; border-radius: 14px; padding: 28px; margin-bottom: 24px; border: 1px solid rgba(0,0,0,0.07); }
+.res-detail h3 { font-family: 'Fauna One', serif; font-size: 1.2rem; color: var(--vert); margin-bottom: 12px; }
+.res-detail p { font-size: 15px; color: #555; line-height: 1.8; }
+
+.email-box { background: var(--rose); border-radius: 16px; padding: 36px; border: 1px solid rgba(233,90,34,0.1); margin-bottom: 24px; }
+.email-box h3 { font-family: 'Fauna One', serif; font-size: 1.3rem; color: var(--vert); margin-bottom: 8px; }
+.email-box p { font-size: 14px; color: var(--gris); margin-bottom: 20px; line-height: 1.6; }
+.form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.form-input { flex: 1; min-width: 180px; padding: 13px 16px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Nunito Sans', sans-serif; font-size: 14px; background: white; color: var(--texte); outline: none; transition: border-color 0.2s; }
+.form-input:focus { border-color: var(--vert); }
+.form-input::placeholder { color: #bbb; }
+.btn-sub { padding: 13px 24px; background: var(--orange); color: white; border: none; border-radius: 8px; font-family: 'Nunito Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.btn-sub:hover { background: #d04e1c; }
+.btn-sub:disabled { opacity: 0.6; cursor: not-allowed; }
+.form-note { font-size: 12px; color: var(--gris); margin-top: 10px; }
+.success { display: none; text-align: center; padding: 14px; background: rgba(31,52,46,0.08); border-radius: 8px; margin-top: 14px; }
+.success p { font-size: 14px; color: var(--vert); font-weight: 600; }
+
+.cta-box { background: var(--vert); border-radius: 16px; padding: 36px; text-align: center; }
+.cta-box h3 { font-family: 'Fauna One', serif; font-size: 1.4rem; color: white; margin-bottom: 10px; line-height: 1.3; }
+.cta-box p { font-size: 14px; color: rgba(255,255,255,0.62); margin-bottom: 24px; line-height: 1.7; }
+.btn-cta { display: inline-block; padding: 15px 32px; background: var(--orange); color: white; border-radius: 8px; font-family: 'Nunito Sans', sans-serif; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+.btn-cta:hover { background: #d04e1c; transform: translateY(-2px); }
+
+footer { background: var(--vert); padding: 22px; text-align: center; margin-top: 60px; }
+footer p { font-size: 12px; color: rgba(255,255,255,0.38); }
+
+@media(max-width:600px) {
+  .form-row { flex-direction: column; }
+  .btn-sub { width: 100%; }
+  .res-hero, .email-box, .cta-box { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Kray Formation<span>.</span> by Kray Family</div>
+</div>
+
+<div class="hero">
+  <div class="badge">Test gratuit · 5 minutes</div>
+  <h1>Le test que <em>personne</em> ne te propose</h1>
+  <p>Avant de te lancer, vérifie si ton terrain est vraiment prêt. Pas pour te motiver — pour te protéger.</p>
+  <p class="hero-sub">6 questions · Réponses honnêtes · Clarté immédiate</p>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label">Progression</span>
+  <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+  <span class="progress-count" id="pCount">0 / 6</span>
+</div>
+
+<div class="main" id="quizZone">
+
+  <div class="q-block">
+    <div class="q-num">Question 01</div>
+    <div class="q-title">La stabilité réelle</div>
+    <div class="q-sub">Si ton projet ne générait rien pendant plusieurs mois, ta situation actuelle te permettrait-elle de tenir sans tension permanente ?</div>
+    <div class="options">
+      <div class="option" data-q="1" data-val="green" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟢</span><span class="opt-text">Oui, j'ai une marge suffisante pour construire sans pression</span></div>
+      <div class="option" data-q="1" data-val="orange" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟡</span><span class="opt-text">Ce serait serré, mais gérable</span></div>
+      <div class="option" data-q="1" data-val="red" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🔴</span><span class="opt-text">Non, j'aurais besoin que ça fonctionne rapidement</span></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="q-block">
+    <div class="q-num">Question 02</div>
+    <div class="q-title">Ce que tu refuses de mettre sur la table</div>
+    <div class="q-sub">Ta santé, ton sommeil, ton couple, tes valeurs. Sais-tu clairement ce que tu n'es pas prêt·e à sacrifier, quoi qu'il arrive ?</div>
+    <div class="options">
+      <div class="option" data-q="2" data-val="green" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟢</span><span class="opt-text">Oui, mes limites sont posées et je les tiens</span></div>
+      <div class="option" data-q="2" data-val="orange" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟡</span><span class="opt-text">J'en ai une idée, mais c'est encore flou</span></div>
+      <div class="option" data-q="2" data-val="red" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🔴</span><span class="opt-text">Je n'y ai pas vraiment réfléchi</span></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="q-block">
+    <div class="q-num">Question 03</div>
+    <div class="q-title">L'origine réelle de l'envie</div>
+    <div class="q-sub">Sois honnête avec toi. Ton envie d'entreprendre ressemble davantage à :</div>
+    <div class="options">
+      <div class="option" data-q="3" data-val="green" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟢</span><span class="opt-text">La construction d'un projet qui m'appartient vraiment</span></div>
+      <div class="option" data-q="3" data-val="red" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🔴</span><span class="opt-text">Une envie de fuir une situation qui pèse</span></div>
+      <div class="option" data-q="3" data-val="orange" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟡</span><span class="opt-text">Un mélange des deux, pas encore démêlé</span></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="q-block">
+    <div class="q-num">Question 04</div>
+    <div class="q-title">Ton espace mental réel</div>
+    <div class="q-sub">Pas du temps sur l'agenda — du calme. Une tête qui peut penser sans être déjà pleine. Est-ce que tu as cet espace aujourd'hui ?</div>
+    <div class="options">
+      <div class="option" data-q="4" data-val="green" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟢</span><span class="opt-text">Oui, je me sens relativement disponible</span></div>
+      <div class="option" data-q="4" data-val="orange" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟡</span><span class="opt-text">C'est possible, mais fragile — je tire déjà sur la corde le soir</span></div>
+      <div class="option" data-q="4" data-val="red" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🔴</span><span class="opt-text">Non, je suis déjà à saturation</span></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="q-block">
+    <div class="q-num">Question 05</div>
+    <div class="q-title">Ta relation à ton idée</div>
+    <div class="q-sub">Le terrain transforme toujours les projets. Es-tu prêt·e à ce que ton idée évolue au contact de la réalité ?</div>
+    <div class="options">
+      <div class="option" data-q="5" data-val="green" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟢</span><span class="opt-text">Oui, je suis ouvert·e à l'évolution</span></div>
+      <div class="option" data-q="5" data-val="orange" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟡</span><span class="opt-text">J'y suis attaché·e, mais je peux ajuster si le terrain le demande</span></div>
+      <div class="option" data-q="5" data-val="red" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🔴</span><span class="opt-text">J'ai besoin qu'elle reste telle quelle</span></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="q-block">
+    <div class="q-num">Question 06</div>
+    <div class="q-title">Ton rapport au temps de construction</div>
+    <div class="q-sub">Un projet viable prend le temps qu'il faut. Acceptes-tu de construire dans la durée, sans forcer les résultats ?</div>
+    <div class="options">
+      <div class="option" data-q="6" data-val="green" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟢</span><span class="opt-text">Oui, je suis prêt·e à avancer brique par brique</span></div>
+      <div class="option" data-q="6" data-val="orange" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🟡</span><span class="opt-text">Je le comprends, mais ça me coûte encore</span></div>
+      <div class="option" data-q="6" data-val="red" onclick="pick(this)"><div class="dot"></div><span class="opt-emoji">🔴</span><span class="opt-text">Non, j'ai besoin que ça aille vite</span></div>
+    </div>
+  </div>
+
+  <div class="submit-zone">
+    <button class="btn-voir" id="btnVoir" onclick="showResults()">Voir mes résultats →</button>
+    <div class="btn-note" id="btnNote">Réponds aux 6 questions pour débloquer tes résultats</div>
+  </div>
+
+</div>
+
+<div class="main" id="results">
+  <div class="res-hero">
+    <div class="res-tag" id="rTag"></div>
+    <div class="res-title" id="rTitle"></div>
+    <div class="res-desc" id="rDesc"></div>
+  </div>
+  <div class="res-detail">
+    <h3 id="dTitle"></h3>
+    <p id="dText"></p>
+  </div>
+  <div class="email-box">
+    <h3>Reçois tes résultats complets par email</h3>
+    <p>Une analyse personnalisée selon ton profil + des ressources pour avancer. Maximum 2 fois par mois — pas de flood.</p>
+    <div class="form-row">
+      <input type="text" class="form-input" id="iPrenom" placeholder="Ton prénom">
+      <input type="email" class="form-input" id="iEmail" placeholder="Ton adresse email">
+      <button class="btn-sub" id="btnSub" onclick="sendEmail()">Recevoir →</button>
+    </div>
+    <p class="form-note">Tes données ne sont jamais revendues. Tu te désabonnes en un clic.</p>
+    <div class="success" id="successMsg"><p>✓ C'est envoyé ! Vérifie ta boîte mail.</p></div>
+  </div>
+  <div class="cta-box">
+    <h3 id="ctaTitle"></h3>
+    <p id="ctaText"></p>
+    <a href="#" class="btn-cta">Découvrir le programme →</a>
+  </div>
+</div>
+
+<footer><p>© 2026 Kray Family · Kray Formation · contact@krayformation.fr</p></footer>
+
+<script>
+var answers = {};
+
+function pick(el) {
+  var q = el.getAttribute('data-q');
+  var all = document.querySelectorAll('.option[data-q="'+q+'"]');
+  for (var i=0; i<all.length; i++) all[i].classList.remove('sel');
+  el.classList.add('sel');
+  answers[q] = el.getAttribute('data-val');
+  var count = Object.keys(answers).length;
+  document.getElementById('pFill').style.width = (count/6*100)+'%';
+  document.getElementById('pCount').textContent = count+' / 6';
+  if (count === 6) {
+    document.getElementById('btnVoir').classList.add('active');
+    document.getElementById('btnNote').textContent = 'Tout est prêt — clique pour voir ton profil';
+  }
+}
+
+function showResults() {
+  var vals = Object.values(answers);
+  var g = vals.filter(function(v){return v==='green';}).length;
+  var r = vals.filter(function(v){return v==='red';}).length;
+  var profile, tag, title, desc, dTitle, dText, ctaT, ctaD;
+  if (g >= 4) {
+    profile='solid'; tag='✦ Terrain solide';
+    title='Ton terrain est prêt. Tu peux avancer.';
+    desc='Les fondations sont là. Tu n\'as pas besoin de te précipiter — tu as besoin d\'une méthode.';
+    dTitle='Ce que ça veut dire concrètement';
+    dText='Tu as la stabilité, la clarté et l\'espace mental pour construire sans te mettre en danger. Ce n\'est pas un signal pour foncer — c\'est un signal pour avancer avec méthode. La prochaine étape, c\'est de structurer ton départ sans brûler les étapes.';
+    ctaT='Prête à avancer avec méthode ?';
+    ctaD='Le Vrai Départ Entrepreneurial est un programme de 30 jours pour salarié·es qui veulent construire sans se mettre en danger. Pas vite. Bien.';
+  } else if (r >= 4) {
+    profile='tension'; tag='⚠ Terrain sous tension';
+    title='Le terrain demande de l\'attention avant d\'avancer.';
+    desc='Ce n\'est pas un échec. C\'est une information stratégique que peu de gens prennent le temps de voir.';
+    dTitle='Ce que ça veut dire concrètement';
+    dText='Forcer dans cet état augmente la pression — ça ne la réduit pas. Ton projet mérite mieux que d\'être lancé en mode urgence. Prendre le temps de stabiliser le terrain maintenant, c\'est la décision la plus intelligente que tu puisses faire.';
+    ctaT='Et si on construisait les fondations d\'abord ?';
+    ctaD='Le Vrai Départ Entrepreneurial est conçu exactement pour ça — pas pour te pousser à sauter, mais pour t\'aider à vérifier que le sol tient avant de te lancer.';
+  } else {
+    profile='fragile'; tag='◈ Terrain en construction';
+    title='Il y a de la clarté. Et des zones à consolider.';
+    desc='Ce flou n\'est pas un problème. C\'est un signal utile — ton projet mérite d\'être posé sur une base plus solide.';
+    dTitle='Ce que ça veut dire concrètement';
+    dText='Tu as des éléments solides, et d\'autres qui méritent d\'être clarifiés avant d\'investir du temps, de l\'énergie ou de l\'argent. Il ne te manque pas grand chose — mais ce qui manque est essentiel.';
+    ctaT='Le bon moment pour poser des fondations solides';
+    ctaD='Le Vrai Départ Entrepreneurial t\'accompagne pas à pas pour clarifier ce qui est encore flou, sans te précipiter ni te mettre sous pression.';
+  }
+  document.getElementById('rTag').textContent = tag;
+  document.getElementById('rTag').className = 'res-tag '+profile;
+  document.getElementById('rTitle').textContent = title;
+  document.getElementById('rDesc').textContent = desc;
+  document.getElementById('dTitle').textContent = dTitle;
+  document.getElementById('dText').textContent = dText;
+  document.getElementById('ctaTitle').textContent = ctaT;
+  document.getElementById('ctaText').textContent = ctaD;
+  document.getElementById('quizZone').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function sendEmail() {
+  var p = document.getElementById('iPrenom').value.trim();
+  var e = document.getElementById('iEmail').value.trim();
+  if (!p || !e || !e.includes('@')) { alert('Merci de renseigner ton prénom et ton adresse email.'); return; }
+  var btn = document.getElementById('btnSub');
+  btn.disabled = true;
+  btn.textContent = 'Envoi...';
+  setTimeout(function(){
+    document.getElementById('successMsg').style.display = 'block';
+    btn.textContent = 'Envoyé ✓';
+  }, 1000);
+}
+</script>
+</body>
+</html>
