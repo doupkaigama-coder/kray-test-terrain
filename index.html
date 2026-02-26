@@ -312,12 +312,20 @@ function showResults() {
 }
 
 function sendEmail() {
+ function sendEmail() {
   var prenom = document.getElementById('iPrenom').value.trim();
-  var email  = document.getElementById('iEmail').value.trim();
+  var email = document.getElementById('iEmail').value.trim();
 
   if (!prenom || !email || !email.includes('@')) {
-    alert("Merci de renseigner ton prénom et ton adresse email.");
+    alert("Merci de renseigner un prénom et une adresse email valide.");
     return;
+  }
+
+  window.location.href = "https://www.krayformation.fr/test-terrain?email="
+    + encodeURIComponent(email)
+    + "&first_name="
+    + encodeURIComponent(prenom);
+}
   }
 
   var btn = document.getElementById('btnSub');
