@@ -227,12 +227,21 @@ footer p { font-size: 12px; color: rgba(255,255,255,0.38); }
     <!-- Soumission Systeme.io (cachée) -->
 <iframe name="sio_hidden_iframe" style="display:none;"></iframe>
 
-<form id="sioForm" method="post" action="https://systeme.io/embedded/38424762/subscription" target="sio_hidden_iframe" style="display:none;">
-  <!-- champ anti-spam (doit rester vide) -->
-  <input type="text" name="surname" value="">
-  <input type="text" name="email" id="sio_email">
-  <input type="text" name="first_name" id="sio_first_name">
-  <button type="submit">Subscribe</button>
+<form method="post" action="https://systeme.io/embedded/38424762/subscription">
+
+  <!-- Nom (optionnel) -->
+  <input type="text" name="surname" placeholder="Ton nom">
+
+  <!-- Prénom -->
+  <input type="text" name="first_name" placeholder="Ton prénom" required>
+
+  <!-- Email -->
+  <input type="email" name="email" placeholder="Ton email" required>
+
+  <button type="submit" class="btn-sub">
+    Recevoir →
+  </button>
+
 </form>
   </div>
   <div class="cta-box">
